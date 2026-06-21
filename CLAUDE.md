@@ -9,6 +9,7 @@ Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnec
 - **Config-driven**: navigation and site values in `src/config/site.ts`.
 
 ## Workflow
+- Before the first commit in a session: `git config user.email noreply@anthropic.com && git config user.name Claude`
 - After completing a task: commit → push → create PR → merge PR, without waiting for user confirmation.
 
 ## Rules
