@@ -1,6 +1,6 @@
-# WS1
+# WS39
 
-Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnect API · Deployed on Netlify.
+Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnect API · Deployed on Vercel.
 
 ## Stack
 - **Tailwind v4**: `@import "tailwindcss"` in globals.css — no `@tailwind` directives, no `@apply` without `@reference`.
@@ -18,7 +18,7 @@ Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnec
 - Run `npm run build` before every push — fix all type errors and lint warnings.
 
 ## Deployment
-- All env vars live on Netlify — never commit secrets.
-- Push to `main` → production (`https://assoconnect-ws1.netlify.app/`).
-- Push to any branch + open a PR → Netlify Deploy Preview.
+- All env vars live on Vercel — never commit secrets.
+- Push to `main` → production (`https://assoconnect-ws39.vercel.app/`).
+- Push to any branch + open a PR → Vercel Deploy Preview.
 - After pushing, tell the user the URL and what to look for.
