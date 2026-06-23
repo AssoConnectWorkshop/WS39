@@ -6,8 +6,8 @@ const COOKIE = "ac_explorer_session";
 const TTL = 60 * 60; // 1h — matches AssoConnect access token lifetime
 
 function getSecret() {
-  const s = process.env.SESSION_SECRET;
-  if (!s) throw new Error("SESSION_SECRET is not set");
+  const s = process.env.ASSOCONNECT_API_KEY;
+  if (!s) throw new Error("ASSOCONNECT_API_KEY is not set");
   return new TextEncoder().encode(s);
 }
 

@@ -103,7 +103,7 @@ export default function ApiExplorerClient({ endpoints }: { endpoints: Endpoint[]
           <p className="text-gray-500 text-sm mt-1">{endpoints.length} endpoints across {modules.length - 1} modules</p>
         </div>
         <a
-          href="/api/auth/logout"
+          href="/api/auth/signout"
           className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-1"
         >
           Sign out

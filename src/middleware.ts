@@ -4,7 +4,7 @@ import { jwtVerify } from "jose";
 const COOKIE = "ac_explorer_session";
 
 function getSecret() {
-  const s = process.env.SESSION_SECRET;
+  const s = process.env.ASSOCONNECT_API_KEY;
   if (!s) return null;
   return new TextEncoder().encode(s);
 }
