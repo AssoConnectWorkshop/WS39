@@ -54,7 +54,6 @@ function EndpointCard({ ep }: { ep: Endpoint }) {
           {ep.method}
         </span>
         <span className="font-mono text-sm text-gray-800 truncate">{ep.path}</span>
-        <span className="ml-auto text-xs text-gray-400 shrink-0">{ep.resource}</span>
       </button>
 
       {open && (
@@ -74,77 +73,161 @@ function EndpointCard({ ep }: { ep: Endpoint }) {
 
 export default function ApiExplorerClient({ endpoints }: { endpoints: Endpoint[] }) {
   const [query, setQuery] = useState("");
-  const [activeModule, setActiveModule] = useState<string>("all");
+  const [activeModule, setActiveModule] = useState<string | null>(null);
+  const [activeResource, setActiveResource] = useState<string | null>(null);
 
   const modules = useMemo(() => {
     const seen = new Set(endpoints.map((e) => e.module));
-    return ["all", ...Array.from(seen)];
+    return Array.from(seen);
   }, [endpoints]);
+
+  const resources = useMemo(() => {
+    if (!activeModule) return [];
+    const seen = new Set(
+      endpoints.filter((e) => e.module === activeModule).map((e) => e.resource)
+    );
+    return Array.from(seen);
+  }, [endpoints, activeModule]);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
-    return endpoints.filter((e) => {
-      const matchModule = activeModule === "all" || e.module === activeModule;
-      const matchQuery =
-        !q ||
-        e.path.toLowerCase().includes(q) ||
-        e.resource.toLowerCase().includes(q) ||
-        e.description.toLowerCase().includes(q) ||
-        e.method.toLowerCase().includes(q);
-      return matchModule && matchQuery;
-    });
-  }, [endpoints, query, activeModule]);
+    if (q) {
+      return endpoints.filter(
+        (e) =>
+          e.path.toLowerCase().includes(q) ||
+          e.resource.toLowerCase().includes(q) ||
+          e.description.toLowerCase().includes(q) ||
+          e.method.toLowerCase().includes(q)
+      );
+    }
+    if (activeModule && activeResource) {
+      return endpoints.filter(
+        (e) => e.module === activeModule && e.resource === activeResource
+      );
+    }
+    return [];
+  }, [endpoints, query, activeModule, activeResource]);
+
+  function selectModule(m: string) {
+    setActiveModule(m);
+    setActiveResource(null);
+    setQuery("");
+  }
+
+  function selectResource(r: string) {
+    setActiveResource(r);
+    setQuery("");
+  }
+
+  function goBack() {
+    setActiveResource(null);
+  }
+
+  function goHome() {
+    setActiveModule(null);
+    setActiveResource(null);
+    setQuery("");
+  }
 
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto flex flex-col gap-6">
+      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">AssoConnect API Explorer</h1>
-          <p className="text-gray-500 text-sm mt-1">{endpoints.length} endpoints across {modules.length - 1} modules</p>
+          <p className="text-gray-500 text-sm mt-1">{endpoints.length} endpoints across {modules.length} modules</p>
         </div>
-        <a
-          href="/api/auth/signout"
-          className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-1"
-        >
+        <a href="/api/auth/signout" className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-1">
           Sign out
         </a>
       </div>
 
+      {/* Search */}
       <input
         type="text"
-        placeholder="Search endpoints, resources, methods…"
+        placeholder="Search across all endpoints…"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => { setQuery(e.target.value); if (e.target.value) { setActiveModule(null); setActiveResource(null); } }}
         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl outline-none focus:border-black transition-colors text-sm"
-        autoFocus
       />
 
-      <div className="flex flex-wrap gap-2">
-        {modules.map((m) => (
-          <button
-            key={m}
-            onClick={() => setActiveModule(m)}
-            className={`text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
-              activeModule === m
-                ? "bg-black text-white border-black"
-                : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
-            }`}
-          >
-            {m === "all" ? "All" : MODULE_LABELS[m] ?? m}
-          </button>
-        ))}
-      </div>
+      {/* Breadcrumb */}
+      {(activeModule || activeResource) && !query && (
+        <div className="flex items-center gap-2 text-sm">
+          <button onClick={goHome} className="text-gray-400 hover:text-black transition-colors">All modules</button>
+          {activeModule && (
+            <>
+              <span className="text-gray-300">/</span>
+              <button
+                onClick={goBack}
+                className={`transition-colors ${activeResource ? "text-gray-400 hover:text-black" : "font-semibold text-black"}`}
+              >
+                {MODULE_LABELS[activeModule] ?? activeModule}
+              </button>
+            </>
+          )}
+          {activeResource && (
+            <>
+              <span className="text-gray-300">/</span>
+              <span className="font-semibold text-black">{activeResource}</span>
+            </>
+          )}
+        </div>
+      )}
 
-      <p className="text-xs text-gray-400">{filtered.length} result{filtered.length !== 1 ? "s" : ""}</p>
+      {/* Module grid */}
+      {!activeModule && !query && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {modules.map((m) => {
+            const count = endpoints.filter((e) => e.module === m).length;
+            return (
+              <button
+                key={m}
+                onClick={() => selectModule(m)}
+                className="text-left border-2 border-gray-100 rounded-xl p-4 hover:border-black transition-colors group"
+              >
+                <p className="font-semibold text-gray-900 group-hover:text-black">{MODULE_LABELS[m] ?? m}</p>
+                <p className="text-xs text-gray-400 mt-1">{count} endpoints</p>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-      <div className="flex flex-col gap-2">
-        {filtered.map((ep, i) => (
-          <EndpointCard key={`${ep.method}-${ep.path}-${i}`} ep={ep} />
-        ))}
-        {filtered.length === 0 && (
-          <p className="text-gray-400 text-sm text-center py-12">No endpoints match your search.</p>
-        )}
-      </div>
+      {/* Resource list */}
+      {activeModule && !activeResource && !query && (
+        <div className="flex flex-col gap-2">
+          {resources.map((r) => {
+            const count = endpoints.filter((e) => e.module === activeModule && e.resource === r).length;
+            return (
+              <button
+                key={r}
+                onClick={() => selectResource(r)}
+                className="text-left border rounded-xl px-4 py-3 hover:border-black hover:bg-gray-50 transition-colors flex items-center justify-between group"
+              >
+                <span className="font-medium text-gray-800 group-hover:text-black">{r}</span>
+                <span className="text-xs text-gray-400">{count} endpoint{count !== 1 ? "s" : ""}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Endpoint list */}
+      {(activeResource || query) && (
+        <>
+          {!query && <p className="text-xs text-gray-400">{filtered.length} endpoint{filtered.length !== 1 ? "s" : ""}</p>}
+          {query && <p className="text-xs text-gray-400">{filtered.length} result{filtered.length !== 1 ? "s" : ""}</p>}
+          <div className="flex flex-col gap-2">
+            {filtered.map((ep, i) => (
+              <EndpointCard key={`${ep.method}-${ep.path}-${i}`} ep={ep} />
+            ))}
+            {filtered.length === 0 && (
+              <p className="text-gray-400 text-sm text-center py-12">No endpoints found.</p>
+            )}
+          </div>
+        </>
+      )}
     </main>
   );
 }
