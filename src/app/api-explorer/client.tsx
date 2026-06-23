@@ -135,7 +135,17 @@ export default function ApiExplorerClient({ endpoints }: { endpoints: Endpoint[]
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">AssoConnect API Explorer</h1>
-          <p className="text-gray-500 text-sm mt-1">{endpoints.length} endpoints across {modules.length} modules</p>
+          <p className="text-gray-500 text-sm mt-1">
+            {endpoints.length} endpoints across {modules.length} modules ·{" "}
+            <a
+              href="https://assoconnect.assoconnect.com/api/v1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-black transition-colors"
+            >
+              Full docs
+            </a>
+          </p>
         </div>
         <a href="/api/auth/signout" className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-1">
           Sign out
