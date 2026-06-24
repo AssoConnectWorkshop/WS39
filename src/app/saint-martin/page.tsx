@@ -84,7 +84,7 @@ export default function SaintMartinPage() {
       {/* ── HERO 3 PANNEAUX ────────────────────────────────────────────────── */}
       <section className="min-h-screen grid lg:grid-cols-[1fr_340px_1fr]">
         {/* Panneau gauche — Vins */}
-        <a href="#vins" className="relative flex items-end group overflow-hidden cursor-pointer" style={{ minHeight: "100vh" }}>
+        <a href="/saint-martin/boutique" className="relative flex items-end group overflow-hidden cursor-pointer" style={{ minHeight: "100vh" }}>
           <Image src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=85" alt="Nos vins" fill className="object-cover group-hover:scale-105 transition-transform duration-700" priority />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.08) 60%)" }} />
           <div className="relative z-10 p-10 pb-16">
@@ -136,7 +136,7 @@ export default function SaintMartinPage() {
         </div>
 
         {/* Panneau droit — Vous recevoir */}
-        <a href="#recevoir" className="relative flex items-end group overflow-hidden cursor-pointer" style={{ minHeight: "100vh" }}>
+        <a href="/saint-martin/vous-recevoir" className="relative flex items-end group overflow-hidden cursor-pointer" style={{ minHeight: "100vh" }}>
           <Image src="https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200&q=85" alt="Vous recevoir au château" fill className="object-cover group-hover:scale-105 transition-transform duration-700" priority />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.08) 60%)" }} />
           <div className="relative z-10 p-10 pb-16">
@@ -302,6 +302,35 @@ export default function SaintMartinPage() {
             <a href="#contact" className="px-10 py-4 text-white text-xs tracking-widest uppercase border border-white/40 hover:border-white transition-colors" style={{ fontFamily: "var(--font-sans)" }}>
               Commander par téléphone
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NOTRE DOMAINE — Navigation pages ───────────────────────────────── */}
+      <section className="py-20 px-6" style={{ background: "#1a0f0a" }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[#c8a96e] text-xs tracking-[0.35em] uppercase mb-4" style={{ fontFamily: "var(--font-sans)" }}>Explorer</p>
+            <h2 className="text-4xl font-light text-white" style={{ fontFamily: "var(--font-serif)" }}>Notre Domaine</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { label: "Histoire", sub: "20 siècles d'histoire", href: "/saint-martin/histoire" },
+              { label: "Terroir", sub: "2 zones géologiques uniques", href: "/saint-martin/terroir" },
+              { label: "La Vigne", sub: "50 hectares en Provence", href: "/saint-martin/la-vigne" },
+              { label: "La Cave", sub: "Gravitaire & thermorégulation", href: "/saint-martin/la-cave" },
+              { label: "Les Vendanges", sub: "De nuit, en parcellaire", href: "/saint-martin/les-vendanges" },
+              { label: "Démarche agro", sub: "Agriculture de régénération", href: "/saint-martin/la-demarche-agro-responsable" },
+              { label: "Cru Classé", sub: "Une reconnaissance exigeante", href: "/saint-martin/cru-classe" },
+              { label: "Dans le monde", sub: "Primé & exporté partout", href: "/saint-martin/saint-martin-dans-le-monde" },
+            ].map((item) => (
+              <a key={item.href} href={item.href} className="border border-white/10 p-6 hover:border-[#c8a96e] hover:bg-white/5 transition-all group">
+                <h3 className="text-white text-xl font-light mb-1 group-hover:text-[#c8a96e] transition-colors" style={{ fontFamily: "var(--font-serif)" }}>
+                  {item.label}
+                </h3>
+                <p className="text-white/40 text-xs" style={{ fontFamily: "var(--font-sans)" }}>{item.sub}</p>
+              </a>
+            ))}
           </div>
         </div>
       </section>
