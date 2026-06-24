@@ -9,11 +9,11 @@ export const siteConfig = {
   owner: "Adeline de Barry",
   generation: "11e génération",
   nav: [
-    { label: "Notre Domaine", href: "#domaine" },
-    { label: "Nos Vins", href: "#vins" },
-    { label: "Vous recevoir", href: "#recevoir" },
-    { label: "Boutique", href: "#boutique" },
-    { label: "Contact", href: "#contact" },
+    { label: "Notre Domaine", href: "/saint-martin#domaine" },
+    { label: "Nos Vins", href: "/saint-martin#vins" },
+    { label: "Vous recevoir", href: "/saint-martin/vous-recevoir" },
+    { label: "Boutique", href: "/saint-martin/boutique" },
+    { label: "Contact", href: "/saint-martin/contact" },
   ],
   boutiqueCategories: [
     "Nos Crus Classés",
