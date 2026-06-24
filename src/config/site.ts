@@ -1,19 +1,22 @@
 export const siteConfig = {
   name: "Château de Saint-Martin",
   description:
-    "Domaine viticole d'exception en Provence. Vins, hébergement de luxe, gastronomie et événements au cœur des Côtes de Provence.",
+    "Cru Classé de Provence depuis 1740. Vins d'exception, hébergement de luxe et art de recevoir au cœur du Var.",
   url: "https://assoconnect-ws39.vercel.app",
+  founded: "1740",
+  classification: "Cru Classé",
   nav: [
+    { label: "Nos Vins", href: "#vins" },
+    { label: "Vous recevoir", href: "#recevoir" },
     { label: "Le Domaine", href: "#domaine" },
-    { label: "Les Vins", href: "#vins" },
-    { label: "Hébergement", href: "#hebergement" },
-    { label: "Restaurant", href: "#restaurant" },
-    { label: "Événements", href: "#evenements" },
+    { label: "Actualités", href: "#actualites" },
+    { label: "Boutique", href: "#boutique" },
     { label: "Contact", href: "#contact" },
   ],
   contact: {
-    address: "Route de Callas, 83690 Tourtour, Var, France",
-    phone: "+33 4 94 70 55 32",
+    address: "614 Route des Arcs",
+    city: "83460 Taradeau — France",
+    phone: "+33(0) 4 94 99 76 76",
     email: "contact@chateaudesaintmartin.com",
   },
 };
